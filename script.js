@@ -1,5 +1,27 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    // --- Theme Toggle Logic ---
+    const themeToggleButton = document.getElementById('theme-toggle');
+    if (themeToggleButton) {
+        // Check for saved theme in localStorage
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        }
+
+        themeToggleButton.addEventListener('click', () => {
+            // Toggle the .dark-mode class on the body
+            document.body.classList.toggle('dark-mode');
+
+            // Save the user's preference
+            let theme = 'light';
+            if (document.body.classList.contains('dark-mode')) {
+                theme = 'dark';
+            }
+            localStorage.setItem('theme', theme);
+        });
+    }
+
     // --- Navbar Scroll Effect ---
     const navbar = document.querySelector('.navbar');
     if (navbar) {

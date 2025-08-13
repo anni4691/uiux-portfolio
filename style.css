@@ -1,13 +1,26 @@
-/* --- FINAL THEME: Refined Kinetic Typography --- */
+/* --- Light & Dark Mode Color Palettes --- */
 :root {
     --bg-color: #F0F0F0;
     --text-color: #111111;
     --secondary-text-color: #666666;
     --accent-color: #FF005C; /* Hot Pink */
     --border-color: #D1D1D1;
+    --card-bg-color: #FFFFFF;
+    --navbar-bg: rgba(240, 240, 240, 0.8);
     --font-heading: 'Syne', sans-serif;
     --font-body: 'Sora', sans-serif;
 }
+
+body.dark-mode {
+    --bg-color: #0A0A0A;
+    --text-color: #EAEAEA;
+    --secondary-text-color: #888888;
+    --accent-color: #00FF99; /* Electric Lime */
+    --border-color: #333333;
+    --card-bg-color: #111111;
+    --navbar-bg: rgba(10, 10, 10, 0.8);
+}
+
 
 * {
     box-sizing: border-box;
@@ -26,6 +39,7 @@ body {
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .container {
@@ -45,7 +59,7 @@ body {
     transition: background-color 0.3s ease, box-shadow 0.3s ease, padding 0.3s ease;
 }
 .navbar.scrolled {
-    background-color: rgba(240, 240, 240, 0.8);
+    background-color: var(--navbar-bg);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
@@ -92,7 +106,6 @@ body {
     transform: scaleX(1);
     transform-origin: left;
 }
-/* Style for Navbar Resume Button */
 .btn-nav {
     display: inline-block;
     padding: 0.4rem 1rem;
@@ -108,6 +121,24 @@ body {
     color: var(--bg-color);
 }
 
+/* Theme Toggle Button */
+.theme-toggle {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    color: var(--text-color);
+}
+.theme-toggle svg {
+    width: 22px;
+    height: 22px;
+}
+.moon-icon { display: none; }
+.dark-mode .sun-icon { display: none; }
+.dark-mode .moon-icon { display: block; }
+
 
 /* --- Kinetic Hero Section --- */
 .hero {
@@ -116,14 +147,14 @@ body {
     align-items: center;
     justify-content: center;
     overflow: hidden;
-    padding: 6rem 2rem;
+    padding: 6rem 1.5rem;
 }
 .kinetic-text-container {
     text-align: center;
 }
 .kinetic-text {
     font-family: var(--font-heading);
-    font-size: clamp(3rem, 10vw, 8rem);
+    font-size: clamp(2.5rem, 10vw, 8rem);
     font-weight: 800;
     line-height: 1.1;
     text-transform: uppercase;
@@ -134,6 +165,10 @@ body {
     color: transparent;
     -webkit-text-stroke: 2px var(--text-color);
 }
+body.dark-mode .kinetic-text.accent {
+    -webkit-text-stroke: 1px var(--text-color);
+}
+
 
 /* --- Work Section --- */
 .work {
@@ -142,7 +177,7 @@ body {
 .work-header {
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 1rem;
-    margin-bottom: 4rem;
+    margin-bottom: 3rem;
 }
 .work-header h2 {
     font-family: var(--font-heading);
@@ -161,10 +196,14 @@ body {
     display: block;
     position: relative;
     grid-column: span 1;
+    transition: transform 0.3s ease;
+}
+.project-card:hover {
+    transform: translateY(-5px);
 }
 .card-image-wrapper {
     overflow: hidden;
-    background-color: #ddd;
+    background-color: var(--card-bg-color);
     border: 1px solid var(--border-color);
 }
 .project-card img {
@@ -273,15 +312,22 @@ body {
     .work-grid, .about-container {
         display: flex;
         flex-direction: column;
-        gap: 4rem;
+        gap: 3rem;
     }
     .contact-links {
         text-align: left;
         margin-top: 2rem;
     }
 }
+
 @media (max-width: 768px) {
-    .work-grid {
-        grid-template-columns: 1fr;
-    }
+    .work, .about { padding: 4rem 0; }
+    .container { padding: 0 1.5rem; }
+    .nav-links { gap: 1.5rem; }
+    .work-grid { grid-template-columns: 1fr; }
+    .card-content h3 { font-size: 1.25rem; }
+    .about-text h2 { font-size: 2rem; }
+    .about-text p { font-size: 1rem; }
+    .contact-link { font-size: 1.5rem; }
+    .footer-container { flex-direction: column; gap: 0.5rem; }
 }
