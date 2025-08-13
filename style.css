@@ -1,3 +1,5 @@
+/* --- FINAL THEME: Refined Kinetic Typography --- */
+
 /* --- Light & Dark Mode Color Palettes --- */
 :root {
     --bg-color: #F0F0F0;
@@ -76,6 +78,7 @@ body {
     color: var(--text-color);
     text-decoration: none;
     font-size: 1.25rem;
+    z-index: 101;
 }
 .nav-links {
     display: flex;
@@ -130,14 +133,22 @@ body {
     display: flex;
     align-items: center;
     color: var(--text-color);
+    margin-left: 1rem;
 }
 .theme-toggle svg {
     width: 22px;
     height: 22px;
+    transition: transform 0.3s ease;
+}
+.theme-toggle:hover svg {
+    transform: scale(1.1) rotate(15deg);
 }
 .moon-icon { display: none; }
-.dark-mode .sun-icon { display: none; }
-.dark-mode .moon-icon { display: block; }
+body.dark-mode .sun-icon { display: none; }
+body.dark-mode .moon-icon { display: block; }
+
+/* Hamburger Menu Styles */
+.nav-toggle { display: none; }
 
 
 /* --- Kinetic Hero Section --- */
@@ -169,11 +180,8 @@ body.dark-mode .kinetic-text.accent {
     -webkit-text-stroke: 1px var(--text-color);
 }
 
-
 /* --- Work Section --- */
-.work {
-    padding: 8rem 0;
-}
+.work { padding: 8rem 0; }
 .work-header {
     border-bottom: 1px solid var(--border-color);
     padding-bottom: 1rem;
@@ -205,6 +213,10 @@ body.dark-mode .kinetic-text.accent {
     overflow: hidden;
     background-color: var(--card-bg-color);
     border: 1px solid var(--border-color);
+    transition: border-color 0.3s ease;
+}
+.project-card:hover .card-image-wrapper {
+    border-color: var(--accent-color);
 }
 .project-card img {
     width: 100%;
@@ -216,17 +228,13 @@ body.dark-mode .kinetic-text.accent {
 .project-card:hover img {
     transform: scale(1.05);
 }
-.card-content {
-    margin-top: 1rem;
-}
+.card-content { margin-top: 1rem; }
 .card-content h3 {
     font-family: var(--font-heading);
     font-size: 1.5rem;
     font-weight: 700;
 }
-.card-content p {
-    color: var(--secondary-text-color);
-}
+.card-content p { color: var(--secondary-text-color); }
 .centered-button {
     text-align: center;
     margin-top: 4rem;
@@ -258,9 +266,7 @@ body.dark-mode .kinetic-text.accent {
     gap: 4rem;
     align-items: center;
 }
-.about-text {
-    max-width: 600px;
-}
+.about-text { max-width: 600px; }
 .about-text h2 {
     font-family: var(--font-heading);
     font-size: 3rem;
@@ -284,9 +290,7 @@ body.dark-mode .kinetic-text.accent {
     text-decoration: none;
     transition: color 0.3s ease;
 }
-.contact-link:hover {
-    color: var(--accent-color);
-}
+.contact-link:hover { color: var(--accent-color); }
 
 /* --- Footer --- */
 .footer {
@@ -309,6 +313,56 @@ body.dark-mode .kinetic-text.accent {
 
 /* --- Responsive Styles --- */
 @media (max-width: 900px) {
+    .nav-toggle {
+        display: block;
+        width: 30px;
+        height: 22px;
+        position: relative;
+        cursor: pointer;
+        background: transparent;
+        border: none;
+        z-index: 101;
+    }
+    .hamburger,
+    .hamburger::before,
+    .hamburger::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background-color: var(--text-color);
+        transition: all 0.3s ease;
+    }
+    .hamburger { top: 10px; }
+    .hamburger::before { top: -10px; }
+    .hamburger::after { top: 10px; }
+    
+    .nav-toggle.active .hamburger { background-color: transparent; }
+    .nav-toggle.active .hamburger::before { transform: rotate(45deg); top: 0; }
+    .nav-toggle.active .hamburger::after { transform: rotate(-45deg); top: 0; }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+        background-color: var(--bg-color);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2.5rem;
+        transform: translateX(100%);
+        transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+    }
+    .nav-links.active {
+        transform: translateX(0);
+    }
+    .nav-link, .btn-nav, .theme-toggle {
+        font-size: 1.5rem;
+    }
+
     .work-grid, .about-container {
         display: flex;
         flex-direction: column;
@@ -323,11 +377,10 @@ body.dark-mode .kinetic-text.accent {
 @media (max-width: 768px) {
     .work, .about { padding: 4rem 0; }
     .container { padding: 0 1.5rem; }
-    .nav-links { gap: 1.5rem; }
     .work-grid { grid-template-columns: 1fr; }
     .card-content h3 { font-size: 1.25rem; }
     .about-text h2 { font-size: 2rem; }
     .about-text p { font-size: 1rem; }
     .contact-link { font-size: 1.5rem; }
-    .footer-container { flex-direction: column; gap: 0.5rem; }
+    .footer { padding: 4rem 0 2rem; }
 }

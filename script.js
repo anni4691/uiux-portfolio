@@ -3,22 +3,39 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Theme Toggle Logic ---
     const themeToggleButton = document.getElementById('theme-toggle');
     if (themeToggleButton) {
-        // Check for saved theme in localStorage
+        // Check for saved theme in localStorage and apply it
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark') {
             document.body.classList.add('dark-mode');
         }
 
         themeToggleButton.addEventListener('click', () => {
-            // Toggle the .dark-mode class on the body
             document.body.classList.toggle('dark-mode');
 
-            // Save the user's preference
             let theme = 'light';
             if (document.body.classList.contains('dark-mode')) {
                 theme = 'dark';
             }
             localStorage.setItem('theme', theme);
+        });
+    }
+
+    // --- Mobile Navigation (Hamburger Menu) Logic ---
+    const navToggle = document.getElementById('nav-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    if (navToggle && navMenu) {
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        navMenu.querySelectorAll('.nav-link, .btn-nav').forEach(link => {
+            link.addEventListener('click', () => {
+                if (!link.target || link.target !== '_blank') {
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                }
+            });
         });
     }
 
@@ -37,17 +54,19 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Kinetic Hero Text Logic ---
     const kineticTextElements = document.querySelectorAll('.kinetic-text');
     if (kineticTextElements.length > 0) {
-        const heroSection = document.querySelector('.hero');
-        heroSection.addEventListener('mousemove', e => {
-            const { clientX, clientY } = e;
-            const { innerWidth, innerHeight } = window;
-            const moveX = (clientX / innerWidth - 0.5) * 40;
-            const moveY = (clientY / innerHeight - 0.5) * 40;
-            kineticTextElements.forEach((el, index) => {
-                const direction = index === 0 ? -1 : 1;
-                el.style.transform = `translate(${moveX * direction}px, ${moveY * direction}px)`;
+        if (!window.matchMedia("(pointer: coarse)").matches) {
+            const heroSection = document.querySelector('.hero');
+            heroSection.addEventListener('mousemove', e => {
+                const { clientX, clientY } = e;
+                const { innerWidth, innerHeight } = window;
+                const moveX = (clientX / innerWidth - 0.5) * 40;
+                const moveY = (clientY / innerHeight - 0.5) * 40;
+                kineticTextElements.forEach((el, index) => {
+                    const direction = index === 0 ? -1 : 1;
+                    el.style.transform = `translate(${moveX * direction}px, ${moveY * direction}px)`;
+                });
             });
-        });
+        }
     }
 
     // --- Scroll-Reveal Animation Logic ---
