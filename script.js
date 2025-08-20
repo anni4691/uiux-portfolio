@@ -3,19 +3,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // --- Theme Toggle Logic ---
     const themeToggleButton = document.getElementById('theme-toggle');
     if (themeToggleButton) {
-        // Check for saved theme in localStorage and apply it
         const currentTheme = localStorage.getItem('theme');
         if (currentTheme === 'dark') {
             document.body.classList.add('dark-mode');
         }
-
         themeToggleButton.addEventListener('click', () => {
             document.body.classList.toggle('dark-mode');
-
-            let theme = 'light';
-            if (document.body.classList.contains('dark-mode')) {
-                theme = 'dark';
-            }
+            let theme = document.body.classList.contains('dark-mode') ? 'dark' : 'light';
             localStorage.setItem('theme', theme);
         });
     }
@@ -28,8 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navMenu.classList.toggle('active');
             navToggle.classList.toggle('active');
         });
-
-        navMenu.querySelectorAll('.nav-link, .btn-nav').forEach(link => {
+        navMenu.querySelectorAll('a').forEach(link => {
             link.addEventListener('click', () => {
                 if (!link.target || link.target !== '_blank') {
                     navMenu.classList.remove('active');
@@ -53,20 +46,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Kinetic Hero Text Logic ---
     const kineticTextElements = document.querySelectorAll('.kinetic-text');
-    if (kineticTextElements.length > 0) {
-        if (!window.matchMedia("(pointer: coarse)").matches) {
-            const heroSection = document.querySelector('.hero');
-            heroSection.addEventListener('mousemove', e => {
-                const { clientX, clientY } = e;
-                const { innerWidth, innerHeight } = window;
-                const moveX = (clientX / innerWidth - 0.5) * 40;
-                const moveY = (clientY / innerHeight - 0.5) * 40;
-                kineticTextElements.forEach((el, index) => {
-                    const direction = index === 0 ? -1 : 1;
-                    el.style.transform = `translate(${moveX * direction}px, ${moveY * direction}px)`;
-                });
+    if (kineticTextElements.length > 0 && !window.matchMedia("(pointer: coarse)").matches) {
+        const heroSection = document.querySelector('.hero');
+        heroSection.addEventListener('mousemove', e => {
+            const { clientX, clientY } = e;
+            const { innerWidth, innerHeight } = window;
+            const moveX = (clientX / innerWidth - 0.5) * 40;
+            const moveY = (clientY / innerHeight - 0.5) * 40;
+            kineticTextElements.forEach((el, index) => {
+                const direction = index === 0 ? -1 : 1;
+                el.style.transform = `translate(${moveX * direction}px, ${moveY * direction}px)`;
             });
-        }
+        });
     }
 
     // --- Scroll-Reveal Animation Logic ---
@@ -94,4 +85,26 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // --- 3D Card Tilt Effect ---
+    const cards = document.querySelectorAll('.project-card');
+    if (cards.length > 0 && !window.matchMedia("(pointer: coarse)").matches) {
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                const rotateX = (y - centerY) / centerY * -8; // Reduced intensity
+                const rotateY = (x - centerX) / centerX * 8;
+                
+                card.style.transition = 'transform 0.1s linear';
+                card.style.transform = `perspective(1500px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transition = 'transform 0.6s cubic-bezier(0.23, 1, 0.32, 1)';
+                card.style.transform = `perspective(1500px) rotateX(0) rotateY(0)`;
+            });
+        });
+    }
 });
